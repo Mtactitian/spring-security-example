@@ -5,6 +5,7 @@ import com.alexb.model.AuthorizedUser;
 import com.alexb.model.dto.UserRegistrationDto;
 import com.alexb.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +25,7 @@ public class UserRegistrationService {
     @Transactional
     public AuthorizedUser registerUser(UserRegistrationDto userRegistrationDto) {
         if (userExists(userRegistrationDto.getUsername())) {
-            throw new RuntimeException();
+            throw new RuntimeException("User already exists");
         }
 
         AuthorizedUser authorizedUser = new AuthorizedUser();

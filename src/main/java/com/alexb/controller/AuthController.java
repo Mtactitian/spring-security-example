@@ -48,7 +48,6 @@ public class AuthController {
         model.addAttribute("username", currentUser.getUsername());
         model.addAttribute("firstname", currentUser.getFirstName());
         model.addAttribute("lastname", currentUser.getLastName());
-        model.addAttribute("password", currentUser.getPassword());
         model.addAttribute("authorities", currentUser.getAuthorities());
         return "/index";
     }
