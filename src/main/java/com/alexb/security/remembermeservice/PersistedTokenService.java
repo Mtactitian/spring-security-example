@@ -40,6 +40,6 @@ public class PersistedTokenService implements PersistentTokenRepository {
 
     @Override
     public void removeUserTokens(String username) {
-        tokenRepository.deleteByUsername(username);
+        tokenRepository.removeByUsername(username);
     }
 }

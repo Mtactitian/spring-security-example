@@ -26,5 +26,4 @@ public class SpringSecurityApplication extends SpringBootServletInitializer {
     public PasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }

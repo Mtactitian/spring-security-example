@@ -23,11 +23,10 @@ VALUES ('ALEX_ADMIN', 'ROLE_ADMIN');
 INSERT INTO t_user_authorities (username, authority)
 VALUES ('ALEX_ADMIN', 'ROLE_USER');
 
-CREATE TABLE persistent_logins (
+CREATE TABLE t_persisted_tokens (
 	series    VARCHAR(64) PRIMARY KEY,
 	username  VARCHAR(64) NOT NULL,
-	token     VARCHAR(64) NOT NULL,
+	tokenValue     VARCHAR(64) NOT NULL,
 	last_used TIMESTAMP   NOT NULL,
 	CONSTRAINT username_fk FOREIGN KEY (username) REFERENCES t_users (username)
 );
-
