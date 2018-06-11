@@ -53,7 +53,6 @@ public class AuthController {
     }
 
     @DeleteMapping(value = "/delete-user")
-    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
     @ResponseBody
     public void deleteUserByName(@RequestParam String username) {
         userContext.deleteUser(username);

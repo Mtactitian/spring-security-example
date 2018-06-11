@@ -23,10 +23,10 @@ public class PersistedToken {
 
     private String username;
 
-    @Column(name = "token")
+    @Column(name = "TOKENVALUE")
     private String tokenValue;
 
-    @Column(name = "last_used")
+    @Column(name = "LAST_USED")
     private Date lastUsed;
 
     public PersistedToken(PersistentRememberMeToken token) {
