@@ -5,7 +5,6 @@ import com.alexb.model.dto.UserRegistrationDto;
 import com.alexb.security.UserContext;
 import com.alexb.service.UserRegistrationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -58,10 +57,5 @@ public class AuthController {
     @ResponseBody
     public void deleteUserByName(@RequestParam String username) {
         userContext.deleteUser(username);
-    }
-
-    @ExceptionHandler(value = Exception.class)
-    public ResponseEntity<?> handleException() {
-        return ResponseEntity.badRequest().build();
     }
 }
