@@ -1,6 +1,7 @@
 package com.alexb.model;
 
 import com.alexb.model.enums.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,7 +28,14 @@ public class Authority implements GrantedAuthority {
     @ManyToOne
     @Getter
     @JoinColumn(name = "username", referencedColumnName = "username")
+    @JsonIgnore
     private AuthorizedUser authorizedUser;
+
+    public static Authority of(String role) {
+        Authority authority = new Authority();
+        authority.setAuthority(Role.valueOf(role));
+        return authority;
+    }
 
     @Override
     public String getAuthority() {

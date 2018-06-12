@@ -1,17 +1,16 @@
 package com.alexb.model.dto;
 
-import com.alexb.constraint.annotations.PasswordMatches;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Pattern;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@PasswordMatches
 public class UserRegistrationDto {
 
     @Length(min = 2, max = 20)
@@ -22,4 +21,9 @@ public class UserRegistrationDto {
     private String password;
 
     private String confirmationPassword;
+
+    @AssertTrue
+    private boolean passwordMatches() {
+        return this.password.equals(confirmationPassword);
+    }
 }

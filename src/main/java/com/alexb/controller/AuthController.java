@@ -6,7 +6,6 @@ import com.alexb.security.UserContext;
 import com.alexb.service.UserRegistrationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -14,7 +13,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Objects;
+
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 @Controller
 @RequiredArgsConstructor
@@ -25,31 +26,29 @@ public class AuthController {
     private final UserRegistrationService registrationService;
 
     @GetMapping(value = "/login")
-    public String getLoginPage(@AuthenticationPrincipal Authentication authentication) {
-        return authentication != null ? "redirect:/" : "/login-page";
+    public String getLoginPage(@AuthenticationPrincipal AuthorizedUser authorizedUser) {
+        return isNull(authorizedUser) ? "/login-page" : "redirect:/";
     }
 
     @GetMapping(value = "/islogged")
     @ResponseBody
-    public boolean testLoggedIn() {
-        return Objects.nonNull(userContext.getCurrentUser());
+    public boolean isUserLogged(@AuthenticationPrincipal AuthorizedUser authorizedUser) {
+        return nonNull(authorizedUser);
     }
 
     @PostMapping(value = "/register")
     @ResponseBody
     public void registerUser(@Valid @RequestBody UserRegistrationDto userRegistrationDto) {
-        final AuthorizedUser registeredUser = registrationService.registerUser(userRegistrationDto);
+        AuthorizedUser registeredUser = registrationService.registerUser(userRegistrationDto);
         userContext.setCurrentUser(registeredUser);
     }
 
     @GetMapping(value = "/")
-    public String getIndexPage(ModelMap model) {
-        final AuthorizedUser currentUser = userContext.getCurrentUser();
-
-        model.addAttribute("username", currentUser.getUsername());
-        model.addAttribute("firstname", currentUser.getFirstName());
-        model.addAttribute("lastname", currentUser.getLastName());
-        model.addAttribute("authorities", currentUser.getAuthorities());
+    public String getIndexPage(@AuthenticationPrincipal AuthorizedUser authorizedUser, ModelMap model) {
+        model.addAttribute("username", authorizedUser.getUsername());
+        model.addAttribute("firstname", authorizedUser.getFirstName());
+        model.addAttribute("lastname", authorizedUser.getLastName());
+        model.addAttribute("authorities", authorizedUser.getAuthorities());
         return "/index";
     }
 
@@ -60,7 +59,6 @@ public class AuthController {
     }
 
     @GetMapping(value = "/token")
-    @PreAuthorize(value = "permitAll()")
     @ResponseBody
     public String token() {
         return SecurityContextHolder.getContext().getAuthentication().getName();
