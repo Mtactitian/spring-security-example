@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -56,5 +57,12 @@ public class AuthController {
     @ResponseBody
     public void deleteUserByName(@RequestParam String username) {
         userContext.deleteUser(username);
+    }
+
+    @GetMapping(value = "/token")
+    @PreAuthorize(value = "permitAll()")
+    @ResponseBody
+    public String token() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 }
